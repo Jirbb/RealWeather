@@ -2,6 +2,10 @@ import React, {useState, useEffect} from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View, Image, ImageBackground } from 'react-native';
 import * as Location from 'expo-location';
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();//Ignore all log notifications
 
 const imagePaths = [
   require('./assets/backgrounds/blood_rain.png'),
@@ -118,7 +122,9 @@ export default function App() {
       }
 
       let locationInfo = await Location.getCurrentPositionAsync({});
-      let regionName = await Location.reverseGeocodeAsync({longitude: locationInfo.coords.longitude, latitude: locationInfo.coords.latitude})
+      let longitude = locationInfo.coords.longitude;
+      let latitude = locationInfo.coords.latitude;
+      let regionName = await Location.reverseGeocodeAsync({longitude: longitude, latitude: latitude})
       setLocation(regionName[0]["city"]);
     })();
   }, []);
@@ -158,7 +164,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundImage: 'assets/backgrounds/blood_rain.png',
     alignItems: 'center',
-    //justifyContent: 'center',
   },
   locationText: {
     color: '#ffffff',
@@ -171,7 +176,6 @@ const styles = StyleSheet.create({
     fontSize: 50,
     flexDirection: 'column',
     textAlign: 'center',
-    //fontWeight: ,
   },
   titleText: {
     color: '#ffffff',
